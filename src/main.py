@@ -4,13 +4,46 @@ Bootcamp II - Fase 2 (Entrega Intermediária)
 Autor: Gabriel Silva
 """
 
+PRIORIDADES_VALIDAS = {
+    "alta": "Alta",
+    "média": "Média",
+    "media": "Média",
+    "baixa": "Baixa",
+}
+
+
+# ---------------------------------------------------------------------------
+# Funções de validação (regras de negócio)
+# ---------------------------------------------------------------------------
+
+def ler_titulo():
+    """Solicita o título até que um valor não vazio seja informado."""
+    while True:
+        titulo = input("Título: ").strip()
+        if titulo:
+            return titulo
+        print("[ERRO] O título é obrigatório e não pode ficar vazio. Tente novamente.")
+
+
+def ler_prioridade():
+    """Aceita apenas Alta, Média (ou Media) e Baixa, sem diferenciar maiúsculas."""
+    while True:
+        entrada = input("Prioridade (Alta / Média / Baixa): ").strip().lower()
+        if entrada in PRIORIDADES_VALIDAS:
+            return PRIORIDADES_VALIDAS[entrada]
+        print("[ERRO] Prioridade inválida. Digite apenas: Alta, Média ou Baixa.")
+
+
+# ---------------------------------------------------------------------------
+# Funcionalidades
+# ---------------------------------------------------------------------------
 
 def cadastrar_tarefa(tarefas):
-    """Coleta os dados e adiciona a nova tarefa à lista."""
+    """Coleta os dados, valida e adiciona a nova tarefa à lista."""
     print("\n--- CADASTRAR NOVA TAREFA ---")
-    titulo = input("Título: ").strip()
+    titulo = ler_titulo()
     descricao = input("Descrição: ").strip()
-    prioridade = input("Prioridade (Alta / Média / Baixa): ").strip()
+    prioridade = ler_prioridade()
     data_limite = input("Data limite (DD/MM/AAAA): ").strip()
 
     tarefa = {
@@ -18,7 +51,7 @@ def cadastrar_tarefa(tarefas):
         "descricao": descricao,
         "prioridade": prioridade,
         "data_limite": data_limite,
-        "status": "Pendente",
+        "status": "Pendente",  # definido automaticamente
     }
     tarefas.append(tarefa)
     print(f"\n[OK] Tarefa '{titulo}' cadastrada com sucesso!")
@@ -50,6 +83,10 @@ def exibir_menu():
     print("3. Sair da aplicação")
 
 
+# ---------------------------------------------------------------------------
+# Loop principal
+# ---------------------------------------------------------------------------
+
 def main():
     tarefas = []
     while True:
@@ -68,4 +105,7 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except (KeyboardInterrupt, EOFError):
+        print("\n\nAplicação encerrada pelo usuário.")
