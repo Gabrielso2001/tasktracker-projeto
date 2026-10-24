@@ -1,0 +1,8 @@
+services:
+  tasktracker:
+    build: .
+    image: tasktracker-app
+    # Mantém o canal de entrada (stdin) aberto para o input() da CLI
+    stdin_open: true
+    # Aloca um terminal virtual (TTY), simulando o console
+    tty: true
